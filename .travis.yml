@@ -1,0 +1,13 @@
+sudo: require
+language: generic
+services:
+  - docker
+before_install:
+  - docker build -t surabhiojha12/react-test -f ./client/Dockerfile.dev ./client
+script:
+  - docker run -e CI=true surabhiojha12/react-test npm run test
+after_success:
+  - docker build -t surabhiojha12/multi-client ./client
+  - docker build -t surabhiojha12/multi-nginx ./nginx
+  - docker build -t surabhiojha12/multi-server ./server
+  - docker build -t surabhiojha12/multi-worker ./worker
